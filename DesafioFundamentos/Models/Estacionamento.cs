@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace DesafioFundamentos.Models
 {
     public class Estacionamento
@@ -17,10 +19,23 @@ namespace DesafioFundamentos.Models
             string placa = "";
 
             Console.WriteLine("Digite a placa do veículo para estacionar:");
-            placa = Console.ReadLine();
-            veiculos.Add(placa);
-
-            Console.WriteLine($"Veículo {placa} adicionado com sucesso!");
+            placa = Console.ReadLine().ToUpper();
+            if (!veiculos.Contains(placa))
+            {
+                if (Regex.IsMatch(placa, "^[A-Z]{3}-[0-9]{4}") || Regex.IsMatch(placa, "^[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}"))
+                {
+                    veiculos.Add(placa);
+                    Console.WriteLine($"Veículo {placa} adicionado com sucesso!");
+                }
+                else
+                {
+                    Console.WriteLine($"Placa inválida!");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"A placa {placa} já está registrada no sistema!");
+            }
         }
 
         public void RemoverVeiculo()
@@ -34,7 +49,7 @@ namespace DesafioFundamentos.Models
             if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
             {
                 int horas = 0;
-                decimal valorTotal = 0; 
+                decimal valorTotal = 0;
 
                 Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
                 horas = Convert.ToInt32(Console.ReadLine());
